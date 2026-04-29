@@ -30,7 +30,7 @@ class _InvenioQueuesState(object):
     @cached_property
     def queues(self):
         if self._queues is None:
-            self._queues = dict()
+            queues = dict()
             from_entry_point = [
                 ep.load()() for ep in entry_points(group=self.entry_point_group)
             ]
@@ -39,14 +39,16 @@ class _InvenioQueuesState(object):
                 from_entry_point, [self.app.config["QUEUES_DEFINITIONS"]]
             ):
                 for cfg in queue:
-                    if cfg["name"] in self._queues:
+                    if cfg["name"] in queues:
                         raise DuplicateQueueError(
                             "Duplicate queue {0} found".format(cfg["name"])
                         )
 
-                    self._queues[cfg["name"]] = Queue(
+                    queues[cfg["name"]] = Queue(
                         cfg["exchange"], cfg["name"], self.connection_pool
                     )
+
+            self._queues = queues
 
         return self._queues
 

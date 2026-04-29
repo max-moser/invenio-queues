@@ -58,6 +58,8 @@ def test_duplicate_queue(app, MockEntryPoint):
         with patch("importlib.metadata.entry_points", entrypoints):
             with pytest.raises(DuplicateQueueError):
                 current_queues.queues()
+            assert current_queues._queues is None
+            assert "queues" not in current_queues.__dict__
 
 
 with_different_brokers = pytest.mark.parametrize(
