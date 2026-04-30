@@ -10,6 +10,10 @@
 Changes
 =======
 
+Version v1.0.3 (released 2026-04-30)
+
+- fix(ext): make `current_queues.queues` property thread-safe
+
 Version v1.0.2 (released 2025-10-28)
 
 - fix: reusable workflows
