@@ -1,4 +1,72 @@
-[build-system]
-requires = ["setuptools", "wheel", "babel>2.8"]
-build-backend = "setuptools.build_meta"
+# SPDX-FileCopyrightText: 2017-2020 CERN.
+# SPDX-FileCopyrightText: 2022-2026 TU Wien.
+# SPDX-License-Identifier: MIT
 
+[project]
+name = "invenio-queues"
+description = "Invenio module for managing queues."
+readme = "README.rst"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [
+  { name = "CERN", email = "info@inveniosoftware.org" },
+]
+keywords = [
+  "TODO",
+  "invenio",
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+]
+dependencies = [
+  "invenio-base>=2.2.0,<3.0.0",
+  "invenio-celery>=2.2.0,<3.0.0",
+  "redis>=3.4.0",
+]
+dynamic = ["version"]
+
+[project.urls]
+Repository = "https://github.com/inveniosoftware/invenio-queues"
+
+[project.entry-points."flask.commands"]
+queues = "invenio_queues.cli:queues"
+
+[project.entry-points."invenio_base.api_apps"]
+invenio_queues = "invenio_queues:InvenioQueues"
+
+[project.entry-points."invenio_base.apps"]
+invenio_queues = "invenio_queues:InvenioQueues"
+
+[project.entry-points."invenio_i18n.translations"]
+messages = "invenio_queues"
+
+[project.optional-dependencies]
+docs = []
+tests = [
+  "pytest-black>=0.3.10",
+  "pytest-invenio>=3.0.0,<4.0.0",
+  "sphinx>=4.5.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "invenio_queues/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/invenio_queues",
+]
+
+[tool.isort]
+profile = "black"
+
+[tool.pydocstyle]
+add_ignore = "D401"
+
+[tool.pytest.ini_options]
+addopts = '--black --isort --pydocstyle --doctest-glob="*.rst" --doctest-modules --cov=invenio_queues --cov-report=term-missing'
+testpaths = "tests invenio_queues"
+live_server_scope = "module"
